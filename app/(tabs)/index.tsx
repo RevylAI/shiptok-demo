@@ -18,7 +18,7 @@ export default function ShopScreen() {
       : allProducts.filter(p => p.category === activeFilter);
 
   const visibleProducts = isSortedByPriceLowToHigh
-    ? [...filteredProducts].sort((a, b) => a.price - b.price)
+    ? [...filteredProducts].sort((a, b) => a.price - b.price || a.name.localeCompare(b.name))
     : filteredProducts;
 
   return (
