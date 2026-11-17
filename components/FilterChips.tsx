@@ -1,20 +1,45 @@
 import React from 'react';
-import { ScrollView, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { ScrollView, TouchableOpacity, Text, View, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing, Fonts } from '../constants/theme';
 import { categories } from '../constants/products';
 
 type Props = {
   activeFilter: string;
   onFilterChange: (filter: string) => void;
+  isSortedByPriceLowToHigh: boolean;
+  onToggleSortByPriceLowToHigh: () => void;
 };
 
-export default function FilterChips({ activeFilter, onFilterChange }: Props) {
+export default function FilterChips({
+  activeFilter,
+  onFilterChange,
+  isSortedByPriceLowToHigh,
+  onToggleSortByPriceLowToHigh,
+}: Props) {
   return (
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.filters}
     >
+      <TouchableOpacity
+        style={[styles.chip, styles.sortChip, isSortedByPriceLowToHigh && styles.chipActive]}
+        onPress={onToggleSortByPriceLowToHigh}
+        activeOpacity={0.7}
+        accessibilityRole="button"
+        accessibilityState={{ selected: isSortedByPriceLowToHigh }}
+      >
+        <Ionicons
+          name="arrow-up"
+          size={14}
+          color={isSortedByPriceLowToHigh ? Colors.paperWhite : Colors.inkBlack}
+        />
+        <Text style={[styles.chipText, isSortedByPriceLowToHigh && styles.chipTextActive]}>
+          Price: low to high
+        </Text>
+      </TouchableOpacity>
+      <View style={styles.divider} />
       {categories.map(filter => (
         <TouchableOpacity
           key={filter}
@@ -46,6 +71,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'transparent',
   },
+  sortChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.xs,
+    borderColor: Colors.inkBlack,
+    backgroundColor: Colors.paperWhite,
+  },
   chipActive: {
     backgroundColor: Colors.inkBlack,
   },
@@ -57,5 +89,10 @@ const styles = StyleSheet.create({
   },
   chipTextActive: {
     color: Colors.paperWhite,
+  },
+  divider: {
+    width: 1,
+    marginVertical: 6,
+    backgroundColor: 'rgba(0,0,0,0.1)',
   },
 });

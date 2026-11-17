@@ -10,11 +10,16 @@ import { Colors, Spacing } from '../../constants/theme';
 
 export default function ShopScreen() {
   const [activeFilter, setActiveFilter] = useState('All Bugs');
+  const [isSortedByPriceLowToHigh, setIsSortedByPriceLowToHigh] = useState(false);
 
   const filteredProducts =
     activeFilter === 'All Bugs'
       ? allProducts
       : allProducts.filter(p => p.category === activeFilter);
+
+  const visibleProducts = isSortedByPriceLowToHigh
+    ? [...filteredProducts].sort((a, b) => a.price - b.price)
+    : filteredProducts;
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -25,8 +30,13 @@ export default function ShopScreen() {
         showsVerticalScrollIndicator={false}
       >
         <HeroBanner />
-        <FilterChips activeFilter={activeFilter} onFilterChange={setActiveFilter} />
-        <ProductGrid products={filteredProducts} />
+        <FilterChips
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+          isSortedByPriceLowToHigh={isSortedByPriceLowToHigh}
+          onToggleSortByPriceLowToHigh={() => setIsSortedByPriceLowToHigh(isSorted => !isSorted)}
+        />
+        <ProductGrid products={visibleProducts} />
       </ScrollView>
     </SafeAreaView>
   );
