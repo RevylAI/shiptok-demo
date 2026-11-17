@@ -34,7 +34,7 @@ export default function CartScreen() {
         <View style={styles.emptyState}>
           <Emoji emoji="🛒" size={64} />
           <Text style={styles.emptyTitle}>Cart is empty</Text>
-          <Text style={styles.emptySubtitle}>Add some bugs to get started!</Text>
+          <Text style={styles.emptySubtitle}>Head back to the shop and pick a bug or two.</Text>
           <TouchableOpacity
             style={styles.shopBtn}
             onPress={() => router.back()}
