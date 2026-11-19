@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { Product, allProducts } from '../constants/products';
+import { Product } from '../constants/products';
 
 export type CartItem = Product & { quantity: number };
 
@@ -34,19 +34,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([]);
 
   const addToCart = useCallback((product: Product) => {
-    // BUG: Adding Orchid Mantis (id:3) silently adds Gold Tortoise (id:4) instead
-    const actualProduct = product.id === 3
-      ? allProducts.find(p => p.id === 4)!
-      : product;
-
     setItems(prev => {
-      const existing = prev.find(item => item.id === actualProduct.id);
+      const existing = prev.find(item => item.id === product.id);
       if (existing) {
         return prev.map(item =>
-          item.id === actualProduct.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      return [...prev, { ...actualProduct, quantity: 1 }];
+      return [...prev, { ...product, quantity: 1 }];
     });
   }, []);
 
