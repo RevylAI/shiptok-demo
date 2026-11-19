@@ -26,7 +26,8 @@ export default function SearchScreen() {
       p =>
         p.name.toLowerCase().includes(q) ||
         p.category.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q)
+        p.description.toLowerCase().includes(q) ||
+        p.badge?.toLowerCase().includes(q)
     );
   }, [query]);
 
@@ -88,8 +89,8 @@ export default function SearchScreen() {
                   <Text style={styles.popularPrice}>${product.price.toFixed(2)}</Text>
                 </View>
                 {product.badge && (
-                  <View style={styles.popularBadge}>
-                    <Text style={styles.popularBadgeText}>{product.badge}</Text>
+                  <View style={styles.badge}>
+                    <Text style={styles.badgeText}>{product.badge}</Text>
                   </View>
                 )}
               </TouchableOpacity>
@@ -118,7 +119,14 @@ export default function SearchScreen() {
                   <Emoji emoji={product.emoji} size={28} />
                 </View>
                 <View style={styles.resultInfo}>
-                  <Text style={styles.resultName}>{product.name}</Text>
+                  <View style={styles.resultNameRow}>
+                    <Text style={styles.resultName}>{product.name}</Text>
+                    {product.badge && (
+                      <View style={styles.badge}>
+                        <Text style={styles.badgeText}>{product.badge}</Text>
+                      </View>
+                    )}
+                  </View>
                   <Text style={styles.resultCategory}>{product.category}</Text>
                   <Text style={styles.resultPrice}>${product.price.toFixed(2)}</Text>
                 </View>
@@ -232,13 +240,13 @@ const styles = StyleSheet.create({
     color: Colors.priceGray,
     marginTop: 2,
   },
-  popularBadge: {
+  badge: {
     backgroundColor: Colors.mangoOrange,
     paddingVertical: 2,
     paddingHorizontal: 8,
     borderRadius: 6,
   },
-  popularBadgeText: {
+  badgeText: {
     fontSize: 10,
     fontWeight: 'bold',
     fontFamily: Fonts.body,
@@ -292,6 +300,11 @@ const styles = StyleSheet.create({
   },
   resultInfo: {
     flex: 1,
+  },
+  resultNameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   resultName: {
     fontFamily: Fonts.display,
